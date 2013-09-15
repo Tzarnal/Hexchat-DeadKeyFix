@@ -1,9 +1,9 @@
 import xchat as hexchat
 import re
 
-__module_name__ = "keyfix"
+__module_name__ = "DeadKeyFix"
 __module_version__ = "1.0"
-__module_description__ = "Fixes the stupid Us-International deadkey issue"
+__module_description__ = "Fixes the Us-International deadkey issue"
 
 checkP = re.compile("¨|´")
 replaceP1 = re.compile("¨")
