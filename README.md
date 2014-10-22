@@ -1,7 +1,7 @@
 Hexchat-DeadKeyFix
 ==================
 
-This python plugin for Hexchat fixes an issue in GTK that occurs when using a US-International keyboard layout on windows. All accents (`~^'") will be placed on the next character typed, including ones that don't normally get an accent.
+This python plugin for Hexchat fixes an issue in GTK that occurs when using a US-International keyboard layout on windows. All accents ( ` ~ ^ ' " ) will be placed on the next character typed, including ones that don't normally get an accent.
 
 This plugin fixes that by changing back to the normal behaviour of the quotes, and placing accents on top of those letters that would normally get accents. A whole list can be seen in the source code.
 
