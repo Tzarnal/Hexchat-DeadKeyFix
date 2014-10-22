@@ -11,7 +11,6 @@ __module_description__ = "Fixes the Us-International deadkey issue"
 prev = ''
 
 def keypress_cb(word, word_eol, userdata):
-	print(word)
 	global prev
 	specialChars = {
 		'65104': {
