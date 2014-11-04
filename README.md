@@ -1,9 +1,9 @@
 Hexchat-DeadKeyFix
 ==================
 
-This python plugin for Hexchat fixes an issue in GTK that occurs when using a US-International keyboard layout on windows. When trying to input a single quote an accute accent (´) is the result and when trying to input a double quote a trema(¨) is the result.
+This python plugin for Hexchat fixes an issue in GTK that occurs when using a US-International keyboard layout on windows. All accents ( ` ~ ^ ' " ) will be placed on the next character typed, including ones that don't normally get an accent.
 
-This plugin fixes that by subsituting a ' for a ´ and a " for a ¨. This is a very ugly solution to the issues and naturally stops you from using the ¨ or ´ entirely in Hexchat, which to me is an acceptable loss for actually being able to use quote marks properly.
+This plugin fixes that by changing back to the normal behaviour of the quotes, and placing accents on top of those letters that would normally get accents. A whole list can be seen in the source code.
 
 Installation
 ==================
