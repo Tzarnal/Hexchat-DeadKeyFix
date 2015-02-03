@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Original script by Xesyto on github
 # Revamped by Joeytje50 on github
 
@@ -5,7 +7,7 @@ import hexchat
 import re
 
 __module_name__ = "DeadKeyFix"
-__module_version__ = "2.1"
+__module_version__ = "2.2"
 __module_description__ = "Fixes the Us-International deadkey issue"
 
 prev = ''
@@ -14,40 +16,40 @@ def keypress_cb(word, word_eol, userdata):
 	global prev
 	specialChars = {
 		'65104': {
-			'a': 'à',
-			'o': 'ò',
-			'e': 'è',
-			'i': 'ì',
-			'u': 'ù'
+			'a': u'à',
+			'o': u'ò',
+			'e': u'è',
+			'i': u'ì',
+			'u': u'ù'
 		},
 		'65105': {
-			'a': 'á',
-			'o': 'ó',
-			'e': 'é',
-			'i': 'í',
-			'u': 'ú',
-			'y': 'ý',
-			'c': 'ç'
+			'a': u'á',
+			'o': u'ó',
+			'e': u'é',
+			'i': u'í',
+			'u': u'ú',
+			'y': u'ý',
+			'c': u'ç'
 		},
 		'65106': {
-			'a': 'â',
-			'o': 'ô',
-			'e': 'ê',
-			'i': 'î',
-			'u': 'û'
+			'a': u'â',
+			'o': u'ô',
+			'e': u'ê',
+			'i': u'î',
+			'u': u'û'
 		},
 		'65107': {
-			'a': 'ã',
-			'o': 'õ',
-			'n': 'ñ'
+			'a': u'ã',
+			'o': u'õ',
+			'n': u'ñ'
 		},
 		'65111': {
-			'a': 'ä',
-			'b': 'ö',
-			'e': 'ë',
-			'i': 'ï',
-			'u': 'ü',
-			'y': 'ÿ'
+			'a': u'ä',
+			'b': u'ö',
+			'e': u'ë',
+			'i': u'ï',
+			'u': u'ü',
+			'y': u'ÿ'
 		}
 	}
 	accents = {
@@ -57,7 +59,11 @@ def keypress_cb(word, word_eol, userdata):
 		'65107': '~',
 		'65111': '"'
 	}
-	text = hexchat.get_info('inputbox')
+	
+	charset =  hexchat.get_info('charset')
+	
+	textraw = hexchat.get_info('inputbox')
+	text = unicode(textraw, charset)
 	loc = hexchat.get_prefs("state_cursor")
 
 	if prev in accents and word[2] in specialChars[prev]:		
@@ -76,10 +82,12 @@ def keypress_cb(word, word_eol, userdata):
 			prev = ''
 		return
 	prev = ''
-	
+		
 	loc = hexchat.get_prefs("state_cursor")
 
-	hexchat.command('settext {}'.format(text))
+	settex = u"settext " + text
+
+	hexchat.command( settex.encode(charset) )
 	hexchat.command('setcursor {}'.format(loc+1))	
 	
 	return hexchat.EAT_HEXCHAT
@@ -88,7 +96,7 @@ def unload_cb(userdata):
 	print(__module_name__, 'version', __module_version__, 'unloaded.')
 
 def insert(char,text,loc):
-	return text[:loc] + char + text[loc:]
+	return u"{}{}{}".format(text[:loc] , char , text[loc:])
 
 hexchat.hook_print('Key Press', keypress_cb) 
 hexchat.hook_unload(unload_cb)
