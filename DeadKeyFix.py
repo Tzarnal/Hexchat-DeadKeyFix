@@ -60,7 +60,10 @@ def keypress_cb(word, word_eol, userdata):
 		'65111': '"'
 	}
 	
-	charset =  hexchat.get_info('charset')
+	#When there is no current charset derived from server or channel it is set to IRC
+	#IRC is not a recognized encoding type so default to utf-8 in that case.
+	if(charset == "IRC"):
+		charset = "utf-8"
 	
 	textraw = hexchat.get_info('inputbox')
 	text = unicode(textraw, charset)
