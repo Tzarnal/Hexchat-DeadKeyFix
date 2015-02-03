@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Original script by Xesyto on github
-# Revamped by Joeytje50 on github
-
 import hexchat
 import re
 
 __module_name__ = "DeadKeyFix"
-__module_version__ = "2.2"
+__module_version__ = "2.1"
 __module_description__ = "Fixes the Us-International deadkey issue"
 
 prev = ''
@@ -60,37 +57,44 @@ def keypress_cb(word, word_eol, userdata):
 		'65111': '"'
 	}
 	
+	charset =  hexchat.get_info('charset')
 	#When there is no current charset derived from server or channel it is set to IRC
 	#IRC is not a recognized encoding type so default to utf-8 in that case.
 	if(charset == "IRC"):
 		charset = "utf-8"
-	
+
 	textraw = hexchat.get_info('inputbox')
 	text = unicode(textraw, charset)
 	loc = hexchat.get_prefs("state_cursor")
 
 	if prev in accents and word[2] in specialChars[prev]:		
-		text = insert(specialChars[prev][word[2]],text,loc)
+		#insert an accented character
+		text = insert(specialChars[prev][word[2]],text,loc)		
 	elif prev in accents and word[2] == ' ':		
-		text = insert(accents[prev],text,loc)
+		#insert a clean accent ( input was accent followed by space )
+		text = insert(accents[prev],text,loc)		
 	elif prev in accents and word[0] in accents:		
+		#Insert two accents ( input was accent followed by accent )
 		text = insert(accents[prev] + accents[word[0]],text,loc)
+		loc+=1
 	elif prev in accents and int(word[3]) != 0:		
-		text = insert(accents[prev] + word[2],text,loc)
+		#insert an accent and a character (character and accent do not combine)
+		text = insert(accents[prev] + word[2],text,loc)		
+		loc+=1
 	elif word[0] in accents:
-		prev = word[0]
+		#store an accent input
+		prev = word[0]		
 		return
 	else:
+		#regular character input
 		if int(word[3]) != 0:
-			prev = ''
+			prev = ''			
 		return
 	prev = ''
-		
-	loc = hexchat.get_prefs("state_cursor")
-
+			
 	settex = u"settext " + text
-
 	hexchat.command( settex.encode(charset) )
+
 	hexchat.command('setcursor {}'.format(loc+1))	
 	
 	return hexchat.EAT_HEXCHAT
