@@ -58,14 +58,16 @@ def keypress_cb(word, word_eol, userdata):
 		'65111': '"'
 	}
 	text = hexchat.get_info('inputbox')
-	if prev in accents and word[2] in specialChars[prev]:
-		text += specialChars[prev][word[2]]
-	elif prev in accents and word[2] == ' ':
-		text += accents[prev]
-	elif prev in accents and word[0] in accents:
-		text += accents[prev] + accents[word[0]]
-	elif prev in accents and int(word[3]) != 0:
-		text += accents[prev] + word[2]
+	loc = hexchat.get_prefs("state_cursor")
+
+	if prev in accents and word[2] in specialChars[prev]:		
+		text = insert(specialChars[prev][word[2]],text,loc)
+	elif prev in accents and word[2] == ' ':		
+		text = insert(accents[prev],text,loc)
+	elif prev in accents and word[0] in accents:		
+		text = insert(accents[prev] + accents[word[0]],text,loc)
+	elif prev in accents and int(word[3]) != 0:		
+		text = insert(accents[prev] + word[2],text,loc)
 	elif word[0] in accents:
 		prev = word[0]
 		return
@@ -74,12 +76,19 @@ def keypress_cb(word, word_eol, userdata):
 			prev = ''
 		return
 	prev = ''
+	
+	loc = hexchat.get_prefs("state_cursor")
+
 	hexchat.command('settext {}'.format(text))
-	hexchat.command('setcursor {}'.format(len(text)))
+	hexchat.command('setcursor {}'.format(loc+1))	
+	
 	return hexchat.EAT_HEXCHAT
 
 def unload_cb(userdata):
 	print(__module_name__, 'version', __module_version__, 'unloaded.')
+
+def insert(char,text,loc):
+	return text[:loc] + char + text[loc:]
 
 hexchat.hook_print('Key Press', keypress_cb) 
 hexchat.hook_unload(unload_cb)
