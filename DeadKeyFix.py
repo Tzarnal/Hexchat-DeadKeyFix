@@ -4,7 +4,7 @@ import hexchat
 import re
 
 __module_name__ = "DeadKeyFix"
-__module_version__ = "2.1"
+__module_version__ = "2.2"
 __module_description__ = "Fixes the Us-International deadkey issue"
 
 prev = ''
