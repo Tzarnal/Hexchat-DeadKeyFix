@@ -10,7 +10,7 @@ Installation
 
 Ensure you have Hexchat installed with python plugin and that you've installed Python 2.7.5 for scripts. If not you can find links here: http://hexchat.github.io/downloads.html
 
-Add the DeadKeyFix.py file to your %appdata%\HexChat\addons folder. 
+Add the proper DeadKeyFix.py file to your %appdata%\HexChat\addons folder. If you've got python 2.x installed, you should add DeadKeyFix.py, and if you have Python 3.x installed, you should add DeadKeyFix-3.py.
 
 Relevant Links
 ==================
